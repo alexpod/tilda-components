@@ -112,7 +112,6 @@ window.addEventListener('load', () => {
   const faqItems = document.querySelectorAll('.support-faq__item')
 
   faqItems.forEach((item, index) => {
-    console.log(item)
     objWithFaqItems[`item${index}`] = new FaqAccordion(item)
     objWithFaqItems[`item${index}`].init()
   })
@@ -144,5 +143,43 @@ window.addEventListener('load', () => {
   const calcCVItem = new CalculatorCV(document.querySelector(".calculator-cv"))
   calcCVItem.init()
 
+  /* PRICING PLAN */
+  class PricingPlan {
+    constructor(el) {
+      this.el = el;
+    }
+
+    init = () => {
+      this.options = document.querySelectorAll('.custom-select__menu .custom-select__menu-option')
+      this.option = document.getElementById('option')
+      this.inputWrapper = document.querySelector('.custom-select__wrapper');
+      this.res = document.querySelector('.pricing-plan__price')
+      this.input = document.querySelector('.inputCountryActive')
+      this.dropdown = document.querySelector('.custom-select__menu')
+      this.price = document.querySelector('.pricing-plan__price');
+      this.flag = document.getElementById('flag')
+      this.input.addEventListener('click', this.handleClick);
+    }
+    
+    handleClick = (event) => {
+      this.dropdown.classList.toggle('active');
+      this.inputWrapper.classList.toggle('active')
+      this.options.forEach( item => {
+        item.addEventListener('click', this.selectItem);
+      })
+    };
+
+    selectItem = (e) => {
+      this.flag.removeAttribute('class');
+      this.flag.classList.add('flag', `flag__${e.target.dataset.code}`);
+      this.input.value = e.target.textContent;
+      this.price.textContent = '€ ' + e.target.dataset.price;
+      this.inputWrapper.classList.remove('active');
+      this.option.classList.remove('active');
+    }
+  }
+
+  const pricing = new PricingPlan(document.querySelector(".pricing-plan"))
+  pricing.init()
 
 })

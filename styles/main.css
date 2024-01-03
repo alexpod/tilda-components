@@ -550,7 +550,7 @@ section {
   padding-left: 50px;
 }
 .custom-select__menu-option:hover {
-    background-color: #f8fdf6;
+    background-color: #0074b710;
 }
 
 .custom-select__menu-option:after {
