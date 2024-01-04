@@ -98,25 +98,6 @@ window.addEventListener('load', () => {
     }
   }
 
-  const objWithItems = {}
-  const items = document.querySelectorAll('.support-audio__item')
-
-  items.forEach((item, index) => {
-    objWithItems[`audio${index}`] = new PlayerAudio(item)
-    objWithItems[`audio${index}`].startToWatch()
-  })
-
-  /* FAQ */
-
-  const objWithFaqItems = {}
-  const faqItems = document.querySelectorAll('.support-faq__item')
-
-  faqItems.forEach((item, index) => {
-    objWithFaqItems[`item${index}`] = new FaqAccordion(item)
-    objWithFaqItems[`item${index}`].init()
-  })
-
-  /* CALCULATOR */
   class CalculatorCV {
 
     constructor(el) {
@@ -127,10 +108,10 @@ window.addEventListener('load', () => {
     setRes = (val) => { this.res.textContent = val }
 
     init = () => {
-      this.btn = this.el.querySelector('.calculator-cv__button');
-      this.input = this.el.querySelector('.feature-list__calculator-input');
-      this.res = this.el.querySelector('.feature-list__calculator-price-number');
-      this.input.addEventListener('keyup', this.handleClick);
+      this.btn = this.el.querySelector('.calculator-cv__button')
+      this.input = this.el.querySelector('.feature-list__calculator-input')
+      this.res = this.el.querySelector('.feature-list__calculator-price-number')
+      this.input.addEventListener('keyup', this.handleClick)
     }
 
     handleClick = () => {
@@ -139,46 +120,80 @@ window.addEventListener('load', () => {
       )
     }
   }
-  
-  const calcCVItem = new CalculatorCV(document.querySelector(".calculator-cv"))
-  calcCVItem.init()
 
-  /* PRICING PLAN */
   class PricingPlan {
     constructor(el) {
-      this.el = el;
+      this.el = el
     }
 
     init = () => {
       this.options = document.querySelectorAll('.custom-select__menu .custom-select__menu-option')
       this.option = document.getElementById('option')
-      this.inputWrapper = document.querySelector('.custom-select__wrapper');
+      this.inputWrapper = document.querySelector('.custom-select__wrapper')
       this.res = document.querySelector('.pricing-plan__price')
       this.input = document.querySelector('.inputCountryActive')
       this.dropdown = document.querySelector('.custom-select__menu')
-      this.price = document.querySelector('.pricing-plan__price');
+      this.price = document.querySelector('.pricing-plan__price')
       this.flag = document.getElementById('flag')
-      this.input.addEventListener('click', this.handleClick);
+      this.input.addEventListener('click', this.handleClick)
+      document.addEventListener('click', this.closeDropdown)
     }
-    
-    handleClick = (event) => {
-      this.dropdown.classList.toggle('active');
+
+    removeActiveClass = () => {
+      this.dropdown.classList.remove('active')
+      this.inputWrapper.classList.remove('active')
+    }
+
+    toggleActiveClass = () => {
+      this.dropdown.classList.toggle('active')
       this.inputWrapper.classList.toggle('active')
+    }
+
+    handleClick = () => {
+      this.toggleActiveClass()
       this.options.forEach( item => {
-        item.addEventListener('click', this.selectItem);
+        item.addEventListener('click', this.selectItem)
       })
-    };
+    }
 
     selectItem = (e) => {
-      this.flag.removeAttribute('class');
-      this.flag.classList.add('flag', `flag__${e.target.dataset.code}`);
-      this.input.value = e.target.textContent;
-      this.price.textContent = '€ ' + e.target.dataset.price;
-      this.inputWrapper.classList.remove('active');
-      this.option.classList.remove('active');
+      this.flag.removeAttribute('class')
+      this.flag.classList.add('flag', `flag__${e.target.dataset.code}`)
+      this.input.value = e.target.textContent
+      this.price.textContent = '€ ' + e.target.dataset.price
+      this.removeActiveClass()
+    }
+
+    closeDropdown = (e) => {
+      if (!this.inputWrapper.contains(e.target)) {
+        this.removeActiveClass()
+      }
     }
   }
 
+  /* Audio */
+  const objWithItems = {}
+  const items = document.querySelectorAll('.support-audio__item')
+
+  items.forEach((item, index) => {
+    objWithItems[`audio${index}`] = new PlayerAudio(item)
+    objWithItems[`audio${index}`].startToWatch()
+  })
+
+  /* FAQ */
+  const objWithFaqItems = {}
+  const faqItems = document.querySelectorAll('.support-faq__item')
+
+  faqItems.forEach((item, index) => {
+    objWithFaqItems[`item${index}`] = new FaqAccordion(item)
+    objWithFaqItems[`item${index}`].init()
+  })
+
+  /* Calculator */
+  const calcCVItem = new CalculatorCV(document.querySelector(".calculator-cv"))
+  calcCVItem.init()
+
+  /* Pricing plan */
   const pricing = new PricingPlan(document.querySelector(".pricing-plan"))
   pricing.init()
 
